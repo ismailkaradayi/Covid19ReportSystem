@@ -9,29 +9,29 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 public class SqlService {
-    // SQL Database bağlan
+    // Connecting the SQL Database.
     private static String dbLocation = "jdbc:mysql://localhost/covidservice?useUnicode=true&useLegacyDatetimeCode=false&serverTimezone=Turkey";
     private static String name = "root";
     private static String password = null;
     private static Connection myConnection;
     private static Statement myStatement;
 
-    // KULLANDIGIMIZ API nın Base URL
+    // API has been used to pulling the DATA.
     private static String BASE_URL = "https://corona.lmao.ninja/v2/countries?yesterday&sort";
-    // Çektiğimiz datayı tutuğumuz Arraylist
+    // Pulled data from API has been collected on the ArrayList.
     private static ArrayList<CovidData> covidData = new ArrayList<>();
 
     public static void main(String[] args) {
         try {
-            // SQL driver bağlanıyoruz dataya kullanıcı bilgileriyle
+            // Connecting the SQL Driver with username,password and database location.
             myConnection = (Connection) DriverManager.getConnection(dbLocation,name,password);
             myStatement = myConnection.createStatement();
 
-            // While döngüsü ile TimeUnit yaparak 1 saate bir Veri güncellemesi yapıyoruz
+            // Timeunit Operation. Refreshing the data on every 1 hour.
             while (true){
-                // datarefresh ediliyor
+                //Refreshing the Database.
                 databaseRefresh();
-                // saatlik delay
+                // Refresh delay in hours.
                 TimeUnit.HOURS.sleep(1);
             }
         }catch (Exception e){
@@ -41,20 +41,19 @@ public class SqlService {
 
 
     private static void databaseRefresh(){
-        // tekrarlı veri oldugu için arrayin ustune yazmaması için arraylisti her seferinde temziliyoruz
+        // To not override, database has beeen cleared as soon as the databaseRefresh operation began.
         covidData.clear();
-        // org.json.JSONArray Kütüphanesi kullanrarak bir Json Array oluşturduk getCountry() methodundan Json Array dondurduğumuz veriyi çekiyoruz ve JSONArraye eşitliyoruz
+        //org.json.JSONARRAY library has been used to create jsonArray then the data goes to the getCountry. After that proccess we successfully created jsonArray.
         JSONArray jsonArray = getCountry();
-        // JSONArray in uzunlugu kadar donucek bir for döngüsü kuruyoruz
+        // For loop the length of a created jsonArray object.
         for (int i = 0; i < jsonArray.length();i++){
             try {
-                // JSONOBject ile o anki array blogunun içindeki veriyi çekiyoruz
+                //PULLING THE DATA WITH JSONOBJECT FROM THE ARRAY BLOCK.
+                
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 long updated = jsonObject.getLong("updated");
                 String country = jsonObject.getString("country");
-                // JSON Object içindeki başka bir Objectk içindeki dallanmadan  countryInfo
                 JSONObject countryInfo = jsonObject.getJSONObject("countryInfo");
-                // countryInfo objesini çekiyoruz
                 String flag = countryInfo.getString("flag");
                 int cases = jsonObject.getInt("cases");
                 int todayCases = jsonObject.getInt("todayCases");
@@ -77,7 +76,7 @@ public class SqlService {
                 double recoveredPerOneMillion = jsonObject.getDouble("recoveredPerOneMillion");
                 double criticalPerOneMillion = jsonObject.getDouble("criticalPerOneMillion");
 
-                // HER for Dongusunde Oluşturduğumuz covidData Arraylistine ekleme yapıyoruz
+                // Adding the data to covidData arraylist in every for cycle.
                 covidData.add(new CovidData(updated, country, flag, cases, todayCases, deaths, todayDeaths, recovered,
                         todayRecovered, active, critical, casesPerOneMillion, deathsPerOneMillion, tests,
                         testsPerOneMillion, population, continent, oneCasePerPeople, oneDeathPerPeople, oneTestPerPeople,
@@ -89,12 +88,13 @@ public class SqlService {
         }
 
         try{
-            // Her seferinde veriler ust üstüne binmesin diye database i temizliyoruz
+            //To avoid of overwriting problem clean operation has been done.
             String delete = "DELETE FROM generaltable";
             PreparedStatement deleteStatement = myConnection.prepareStatement(delete);
             deleteStatement.executeUpdate();
 
-            // covidData Arraylistimizi for dongusu ile yazdırıyoruz ve SQL deki database e tek tek aktarıyuz
+            //The gather Data has been collected on arrayList named covidData. Now the data from the arrayList has ben transferred to SQL Database. one by one.
+            //The reason we are transfering the data one by one is because all data has different type of variable.
             for (CovidData in : covidData){
                 String query = "INSERT INTO generaltable(updated, country, flag, cases,todayCases, deaths, " +
                         "todayDeaths, recovered, todayRecovered, active, critical, " +
@@ -134,9 +134,10 @@ public class SqlService {
         }
     }
 
-    // URL Kullanarak BASE URL aracılıgı ile api mize bağlanıyurz
-    // BufferedReader kullanarak api safasını okuyurz
-    // while dongusu ile sitedeki her staırı tektek bir Stringe ekliyoruz ve O stringi de JSONArraye parselliyoruz
+    
+    //Using Base URL connecting the API.
+    //Reading the API with BufferedReader.
+    //With while loop reading the API line by line and parsing to JSONArray.
     private static JSONArray getCountry(){
         try{
             URL url = new URL(BASE_URL);
