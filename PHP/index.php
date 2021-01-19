@@ -19,7 +19,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<!-- BOOTSTRAP -->
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style>
 		.styled-table {
 			width: 100%;
@@ -102,12 +102,10 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 		#table-tab,
 		#percent-tab,
 		#continen-tab {
-			width: 33%;
-			padding: 10px;
+			padding: 14px;
 			display: inline-block;
 			box-sizing: border-box;
 			text-align: center;
-
 			cursor: pointer;
 			font-weight: bold;
 			border: 1px solid #ddd;
@@ -205,13 +203,24 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 	</div>
 
 	<!-- Tabs -->
-	<div style="margin-top: 20px;">
+	<div style="margin-top: 20px; margin-bottom:20px;">
 		<div style="width: 70%; margin:auto; height: 40px;">
-			<div id="table-tab" class="inactice">World Record</div>
-			<div class="active" id="percent-tab">Percentages</div>
-			<div class="active" id="continen-tab">Continents</div>
+			<div class="container">
+				<div class="row">
+					<div class="col-md">
+						<div style="width: 100% !important;" id="table-tab" class="inactice">World Record</div>
+					</div>
+					<div class="col-md">
+						<div style="width: 100% !important;" id="percent-tab" class="active">Percentages</div>
+					</div>
+					<div class="col-md">
+						<div style="width: 100% !important;" id="continen-tab" class="active">Continents</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+
 
 	<div>
 		<!-- World Record -->
@@ -224,22 +233,25 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 			</div>
 
 			<div style="padding-top:40px;">
-				<div style=" width: 70%;  margin:auto;">
+				<div style=" width: 100%;  margin:auto;">
 					<div style="width: 100%;" id="mtopTableDiv">
 						<table class="styled-table">
 							<thead>
 								<tr>
 									<th style="cursor:pointer; width:60px !important;">#</th>
-									<th style="cursor:pointer; width:120px !important;">Flag</th>
-									<th style="cursor:pointer; width:120px !important;">Country</th>
-									<th id="mCases" style="cursor:pointer; width:120px !important;">Total Cases</th>
+									<th style="cursor:pointer; width:100px !important;">Flag</th>
+									<th style="cursor:pointer; width:100px !important;">Country</th>
+									<th id="mCases" style="cursor:pointer; width:100px !important;">Total Cases</th>
+									<th style="cursor:pointer; width:100px !important;">Today Cases</th>
 									<th id="mDeaths" style="cursor:pointer; width:100px !important;">Total Deaths</th>
-									<th id="mRecovered" style="cursor:pointer; width:110px !important;">Total Recovered</th>
-									<th id="mActive" style="cursor:pointer; width:110px !important;">Active</th>
+									<th style="cursor:pointer; width:100px !important;">Today Deaths</th>
+									<th id="mRecovered" style="cursor:pointer; width:100px !important;">Total Recovered</th>
+									<th style="cursor:pointer; width:100px !important;">Today Recovered</th>
+									<th id="mActive" style="cursor:pointer; width:100px !important;">Active</th>
 									<th id="mCritical" style="cursor:pointer; width:100px !important;">Critical</th>
 									<th id="mCasesPer" style="cursor:pointer; width:100px !important;">Cases Per 1M</th>
 									<th id="mDeathsPer" style="cursor:pointer; width:100px !important;">Deaths Per 1M</th>
-									<th id="mTests" style="cursor:pointer; width:120px !important;">Tests</th>
+									<th id="mTests" style="cursor:pointer; width:100px !important;">Tests</th>
 									<th id="mTestsPop" style="cursor:pointer; width:100px !important;">Tests 1M Pop</th>
 									<th id="mPopulation" style="cursor:pointer; width:130px !important;">Population</th>
 									<th style="width:120px;">Continent</th>
@@ -300,7 +312,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 				$("#mTableContainer").show();
 				$("#mPercentContainer").hide();
 				$("#mContinentContainer").hide();
-				
+
 				// tıklanan için css i .inactice yap gerisi için css .active classını yukle
 				$("#table-tab").addClass("inactice");
 				$("#percent-tab").addClass("active");
@@ -492,7 +504,7 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 
 			// World Record da Search Country için içinde yazı var mı yok mu her aksiyonda kontrol et
 			$('#mPercentages').on('input', function(e) {
-				var txt = $('#mPercentages').val();				
+				var txt = $('#mPercentages').val();
 				if (txt != "") {
 					// eğerki içi doluysa 
 					$.post("percentages.php", {
