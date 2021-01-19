@@ -13,7 +13,7 @@ $queryValues = $_POST['queryValues'];
 <html>
 
 <head>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -28,8 +28,8 @@ $queryValues = $_POST['queryValues'];
                 <th>Case By Test</th>
                 <th>Dead By Pop</th>
                 <th>Dead By Case</th>
-                <th>Recover By Pop</th>   
-                <th>Recover By Case</th>                  
+                <th>Recover By Pop</th>
+                <th>Recover By Case</th>
             </tr>
         </thead>
         <tbody>
@@ -42,14 +42,14 @@ $queryValues = $_POST['queryValues'];
                 $testByPop  = $row[2];
                 $caseByTest = $row[3];
                 $deadByPop = $row[4];
-                $deadByCase = $row[5];  
-                $recoverByPop = $row[6];     
-                $recoverByCase = $row[7]; 
-                $flag = $row[8];                 
+                $deadByCase = $row[5];
+                $recoverByPop = $row[6];
+                $recoverByCase = $row[7];
+                $flag = $row[8];
 
                 echo "<tr>";
                 echo "<td>{$count}</td>";
-                echo "<td><img src=\"$flag\"></td>";                
+                echo "<td><img src=\"$flag\"></td>";
                 echo "<td>{$country}</td>";
                 echo "<td>{$caseByPop}</td>";
                 echo "<td>{$testByPop}</td>";
