@@ -16,6 +16,10 @@
 - Select the Database that we created.
 - Insered the codes that below.
 
+WARNING !!!
+AFTER EACH OPERATION. YOU SHOULD CLICK GO ON MYPHP PAGE AND FROM YOU JAVA IDE RUN THE CODE. 
+YOU MUST DO THIS FOR EVERY PHPMYADMIN OPERATION.
+IF YOU WON'T DO THIS YOUR DATA WILL NOT WORK CORRECTLY.
 ### 1. TABLE
 ```
 create table generaltable (
