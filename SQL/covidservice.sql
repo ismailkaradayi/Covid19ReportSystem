@@ -46,7 +46,7 @@ FROM casesPercentage AS cp
 JOIN testsPercentage AS tp ON cp.country = tp.country 
 JOIN deathsPercentage AS dp ON tp.country = dp.country 
 JOIN recoveredPercentage AS rp ON dp.country = rp.country 
-JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC
+JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC;
 
 
 CREATE TABLE continents(
