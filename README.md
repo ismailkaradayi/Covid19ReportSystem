@@ -1,22 +1,22 @@
 # Covid19ReportSystem
 
 
-# Kısaca Nedir
-- Java, MySQL, PHP Tabanlı bir Covid takip sitesi
-- Mevcut Verileri Java tarafından Her 1 Saate bir güncellenip MySQL e aktarılır
-- PHP tarafında ise veriler her 1sn de bir kontrol edilir ve güncel olarak gösterilir 
+# Brief Summary about the Project
+- This project is a World Wide - Covid 19 Report System, based on Java,MySQL and Php languages.
+- Data are gathering from the API by using Java. Then transferred to mySQL on every 1 hour.(This provides a real time data gathering, fresh data. 
+- By using Php the Data and wanted tables refreshing in every 1 seconds to showing the up to date site.
 
-# Kurulum
-## 1. Adım
+# Setting up the site on local hosts.
+## Step 1.
 
-- Xampp'ı çalıştırın
-- Apache ve MySQL Start
-- Ardından MySQL Admin'e basın
-- Açılan sayfada sol tarafda datalar yer alıcak ordan yeni diyip adını 'covidservice' koyun
-- Sonra o datayı seçin 
-- Yukarıdaki menuden SQL'i şeçin ve Aşağıda verdiğim kodu girin
+- Launch XAMMP.
+- Start the apache and mySQL.
+- Press the admin button from the mySQL.
+- Phpmyadmin page will be gonna appear on the screen. On the top-left of the page there should be a new button. Click the new button then, write your database name. In our project we named it 'covidservice'. You can call it what ever you want BUT YOU HAVE TO CHANGE THE NAME $database = "covidservice"; TO $database = "yourwantedname"; in every .php file.
+- Select the Database that we created.
+- Insered the codes that below.
 
-### 1. Tablo
+### 1. TABLE
 ```
 create table generaltable (
     updated bigint(14) NOT NULL,
@@ -43,43 +43,43 @@ create table generaltable (
     recoveredPerOneMillion double,
     criticalPerOneMillion double);
 ```
-### 2. Tablo
+### 2. TABLE
 ```
 CREATE TABLE casesPercentage
 SELECT country,cases,todayCases, (100*cases)/population AS caseByPop
 FROM generaltable;
 ```
 
-### 3. Tablo
+### 3. TABLE
 ```
 CREATE TABLE testsPercentage
 SELECT country,tests, (100*tests)/population AS testByPop, (100*cases)/tests AS caseByTest
 FROM generaltable;
 ```
 
-### 4. Tablo
+### 4. TABLE
 ```
 CREATE TABLE deathsPercentage
 SELECT country, deaths, (100*deaths)/population AS deadByPop, (100*deaths)/cases AS deadByCase
 FROM generaltable;
 ```
 
-### 5. Tablo
+### 5. TABLE
 ```
 CREATE TABLE recoveredPercentage
 SELECT country, recovered, (100*recovered)/population AS recoverByPop, (100*recovered)/cases AS recoverByCase
 FROM generaltable;
 ```
-### 6. Tablo
+### 6. TABLE
 ```
 SELECT cp.country, caseByPop, testByPop, caseByTest, deadByPop, deadByCase, recoverByPop, recoverbyCase,  flag 
 FROM casesPercentage AS cp 
 JOIN testsPercentage AS tp ON cp.country = tp.country 
 JOIN deathsPercentage AS dp ON tp.country = dp.country 
 JOIN recoveredPercentage AS rp ON dp.country = rp.country 
-JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC
+JOIN generaltable AS gt ON rp.country = gt.country ORDER BY `cp`.`country` ASC;
 ```
-### 7. Tablo
+### 7. TABLE
 ```
 CREATE TABLE continents(
     continent CHAR(25) PRIMARY KEY NOT NULL,
@@ -91,7 +91,7 @@ CREATE TABLE continents(
         tests INT,
         population INT);
 ```
-### 8. Insert
+### 8. INSERT the contınents TABLE
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -101,7 +101,7 @@ FROM
 WHERE
     generaltable.continent = 'Asia';
 ```
-### 9. Insert
+### 9. INSERT the contınents TABLE
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -111,7 +111,7 @@ FROM
 WHERE
     generaltable.continent = 'Europe';
 ```
-### 10. Insert
+### 10. INSERT the contınents TABLE
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -121,7 +121,7 @@ FROM
 WHERE
     generaltable.continent = 'North America';
 ```
-### 11. Insert
+### 11. INSERT the contınents TABLE
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -131,7 +131,7 @@ FROM
 WHERE
     generaltable.continent = 'South America';
 ```
-### 12. Insert
+### 12. INSERT the contınents TABLE
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -141,7 +141,7 @@ FROM
 WHERE
     generaltable.continent = 'Africa';
 ```
-### 13. Insert
+### 13. INSERT the contınents TABLE
 ```
 INSERT INTO continents (continent,cases,deaths,recovered,active,critical,tests,population)
 SELECT 
@@ -152,13 +152,13 @@ WHERE
     generaltable.continent = 'Australia/Oceania';
 ```
 
-- Kodu Girdikten sonra sol tarafta bulunan Git Buttonuna basın
-- Tablonuz oluşturuldu
+- After all the wanted code inserted one by one or as a whole. Click the go button.
+- Your table has been successfully created.
 
-## 2. Adım
-- Xampp'ın kurulu oldugu klasorü açın
-- 'htdocs' adlı klasorün içini boşaltın ve Github daki PHP dosyasının içindeki 'index.php' ve 'table.php' yi içine atın
+## Step 2
+- Open the XAMMP folder in your PC.
+- Open the htdocs file inside the XAMPP folder and copy-paste all the 'PHP' documents from the github.
 
-## 3. Adım
-- IntelliJ IDEA da Open Project diyip Github daki 'Covid19ReportSystem' ü şeçin ve projeyi run layın
-- Son olarak Xampp üzerinden  Apache Admin e Tıklayıp test edin 
+## Step 3
+- Open your Java IDE and then copy paste the java source code from the github and run. This will update the database.
+- After all operations finish test it yourself.
